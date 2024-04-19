@@ -1,6 +1,6 @@
-package com.exchange.currencyconverter;
+package com.exchange.currencyconverter.services;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.exchange.currencyconverter.models.ExchangeInput;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -10,15 +10,21 @@ import java.net.URL;
 
 @Service
 public class ExchangeService {
-    @Value("${exchangerate.api.key}")
-    private String apiKey;
 
-    private final String apiUrl = "https://v6.exchangerate-api.com/v6";
+    private static final String API_KEY = "80ae2f105fd5ea99e8b19919";
+    private static final String API_URL = "https://v6.exchangerate-api.com/v6/";
 
-    public ExchangeResponse getExchangeRate(String from, String to, Double amount) {
+
+
+
+    public ExchangeResponse getExchangeRate(ExchangeInput exchangeInput) {
+        String from = String.valueOf(exchangeInput.getFrom());
+        String to = String.valueOf(exchangeInput.getTo());
+        Double amount = exchangeInput.getAmount();
+
         RestTemplate restTemplate = new RestTemplate();
-        String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .pathSegment(apiKey, "pair", from, to, String.valueOf(amount))
+        String url = UriComponentsBuilder.fromHttpUrl(API_URL)
+                .pathSegment(API_KEY, "pair", from, to, String.valueOf(amount))
                 .toUriString();
 
         return restTemplate.getForObject(url, ExchangeResponse.class);
