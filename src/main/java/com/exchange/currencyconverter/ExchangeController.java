@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExchangeController {
     @Autowired
     private ExchangeService exchangeService;
-
+    //TODO: fix this
     @GetMapping("/exchange/{from}/{to}/{amount}")
     public ExchangeService.ExchangeResponse exchange(@PathVariable String from, @PathVariable String to, @PathVariable Double amount) {
         return exchangeService.getExchangeRate(from, to, amount);
